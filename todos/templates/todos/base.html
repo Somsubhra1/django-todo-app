@@ -47,7 +47,11 @@
             <li class="nav-item">
               <a class="nav-link" href="#">Pricing</a>
             </li>
-            {% endcomment %}
+            {% endcomment %} {% if user.is_authenticated %}
+            <li class="nav-item">
+              <a class="nav-link" href="#">New Todo</a>
+            </li>
+            {% endif %}
           </ul>
           <div class="d-flex">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
