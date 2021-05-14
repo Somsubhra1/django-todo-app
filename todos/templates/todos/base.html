@@ -49,7 +49,9 @@
             </li>
             {% endcomment %} {% if user.is_authenticated %}
             <li class="nav-item">
-              <a class="nav-link" href="#">New Todo</a>
+              <a class="nav-link" href="{% url 'todos:todo-create' %}"
+                >New Todo</a
+              >
             </li>
             {% endif %}
           </ul>
