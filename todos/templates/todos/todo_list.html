@@ -1,0 +1,20 @@
+{% extends 'todos/base.html' %} {% block content %} {% for todo in todos %}
+<div class="card mt-3">
+  <div class="card-body d-flex justify-content-between">
+    <p class="card-text">
+      {% if todo.completed %}
+      <del>{{todo.title}}</del>
+      {% else %} {{todo.title}} {% endif %}
+    </p>
+    <div class="">
+      {% if todo.completed %}
+      <a href="#" class="btn btn-warning">Set Incomplete</a>
+      {% else %}
+      <a href="#" class="btn btn-success">Set Completed</a>
+      {% endif %}
+      <a href="#" class="btn btn-danger">Delete</a>
+    </div>
+  </div>
+</div>
+
+{% endfor %} {% endblock content %}
