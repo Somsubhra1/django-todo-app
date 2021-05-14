@@ -1,5 +1,4 @@
-from django.shortcuts import render
-from django.contrib.auth.decorators import login_required
+from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import ListView, DeleteView, CreateView
 from .models import Todo
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -14,7 +13,7 @@ class TodoListView(LoginRequiredMixin, ListView):
     context_object_name = "todos"
 
     def get_queryset(self):
-        return super().get_queryset().filter(user=self.request.user).order_by("-date_created")
+        return super().get_queryset().filter(user=self.request.user).order_by("completed", "-date_created")
 
 
 class TodoDeleteView(LoginRequiredMixin, DeleteView):
@@ -37,3 +36,13 @@ class TodoCreateView(LoginRequiredMixin, CreateView):
         form.instance.user = self.request.user
         messages.success(self.request, "Successfully created Todo!")
         return super().form_valid(form)
+
+
+def todo_update_status(request, todo_id):
+    todo = get_object_or_404(Todo, pk=todo_id)
+
+    todo.completed = not todo.completed
+
+    todo.save()
+
+    return redirect('todos:home')
