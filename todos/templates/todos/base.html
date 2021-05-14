@@ -82,7 +82,10 @@
     <div class="container">
       {% if messages %} {% for message in messages %}
 
-      <div class="col-md-6 alert alert-{{message.tags}} mx-auto" role="alert">
+      <div
+        class="col-md-6 alert alert-{{message.tags}} mx-auto mt-2"
+        role="alert"
+      >
         {{message}}
       </div>
 

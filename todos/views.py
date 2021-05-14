@@ -1,7 +1,8 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import ListView, DeleteView, CreateView
 from .models import Todo
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib import messages
 
 
@@ -16,10 +17,18 @@ class TodoListView(LoginRequiredMixin, ListView):
         return super().get_queryset().filter(user=self.request.user).order_by("completed", "-date_created")
 
 
-class TodoDeleteView(LoginRequiredMixin, DeleteView):
+class TodoDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Todo
 
     success_url = '/'
+
+    def test_func(self):
+        todo = self.get_object()
+
+        if self.request.user == todo.user:
+            return True
+
+        return False
 
     def delete(self, request, *args, **kwargs):
         messages.info(self.request, "Successfully deleted Todo!")
@@ -38,11 +47,16 @@ class TodoCreateView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
+@login_required()
 def todo_update_status(request, todo_id):
-    todo = get_object_or_404(Todo, pk=todo_id)
+
+    todos = Todo.objects.filter(user=request.user)
+    todo = get_object_or_404(todos, pk=todo_id)
 
     todo.completed = not todo.completed
 
     todo.save()
+
+    messages.success(request, "Successfully updated status!")
 
     return redirect('todos:home')
