@@ -13,6 +13,8 @@ class TodoListView(LoginRequiredMixin, ListView):
     model = Todo
     context_object_name = "todos"
 
+    paginate_by = 5
+
     def get_queryset(self):
         return super().get_queryset().filter(user=self.request.user).order_by("completed", "-date_created")
 
