@@ -1,7 +1,7 @@
 {% extends 'todos/base.html' %} {% block content %}
 
 <div class="d-flex flex-column align-items-center mt-3">
-  <h3>Your Todos</h3>
+  <h3><i class="fas fa-list-alt"></i> Your Todos</h3>
   <hr />
   {% for todo in todos %}
   <div class="card mt-1 mb-2 col-sm-12 col-md-6 custom-width">
@@ -16,17 +16,17 @@
         <a
           href="{% url 'todos:todo-update-status' todo.id %}"
           class="btn btn-warning"
-          >Set Incomplete</a
+          ><i class="fas fa-times"></i></a
         >
         {% else %}
         <a
           href="{% url 'todos:todo-update-status' todo.id %}"
           class="btn btn-success"
-          >Set Completed</a
+          ><i class="fas fa-check"></i></a
         >
         {% endif %}
         <a href="{% url 'todos:todo-delete' todo.id %}" class="btn btn-danger"
-          >Delete</a
+          ><i class="fas fa-trash"></i></a
         >
       </div>
     </div>
